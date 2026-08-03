@@ -148,17 +148,17 @@ function Index() {
           </div>
         </section>
 
-        <section className="panel p-6 sm:p-8">
-          <h2 className="text-lg font-semibold">Output details</h2>
+        <section className="panel p-5 sm:p-8">
+          <h2 className="text-base font-semibold sm:text-lg">Output details</h2>
 
-          <div className="mt-8 rounded-2xl border border-border bg-ink/40 p-6">
-            <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+          <div className="mt-6 rounded-2xl border border-border bg-ink/40 p-5 sm:mt-8 sm:p-6">
+            <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
               Total amount
             </p>
-            <p className="mt-2 font-display text-4xl font-bold text-brand sm:text-5xl">
+            <p className="mt-2 font-display text-[1.9rem] leading-tight font-bold break-words text-brand sm:text-5xl">
               {formatCurrency(result.total)}
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">
+            <p className="mt-3 text-xs text-muted-foreground sm:text-sm">
               Your final SIP in month {Math.max(1, Math.round(years * 12))} is{" "}
               <span className="font-semibold text-foreground">
                 {formatCurrency(
@@ -173,24 +173,25 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-border p-5">
-              <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-                Invested amount
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4">
+            <div className="rounded-2xl border border-border p-4 sm:p-5">
+              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
+                Invested
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold">
+              <p className="mt-2 font-display text-lg font-semibold break-words sm:text-2xl">
                 {formatCurrency(result.invested)}
               </p>
             </div>
-            <div className="rounded-2xl border border-border p-5">
-              <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-                Estimated returns
+            <div className="rounded-2xl border border-border p-4 sm:p-5">
+              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
+                Returns
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold text-gold">
+              <p className="mt-2 font-display text-lg font-semibold break-words text-gold sm:text-2xl">
                 {formatCurrency(result.returns)}
               </p>
             </div>
           </div>
+
 
           <div className="mt-6">
             <div className="flex justify-between text-xs font-medium text-muted-foreground">
