@@ -81,7 +81,7 @@ function Index() {
   );
 
   const investedShare = result.total > 0 ? (result.invested / result.total) * 100 : 0;
-  const maxValue = result.rows.length ? result.rows[result.rows.length - 1].value : 1;
+  const maxValue = result.rows.at(-1)?.value || 1;
 
   return (
     <main className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8">
