@@ -77,13 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Step-Up SIP Calculator" },
+      { title: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
       {
         name: "description",
-        content: "Plan a monthly SIP that steps up every quarter and see the corpus it builds.",
+        content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
+      { name: "twitter:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
+      { property: "og:description", content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown." },
+      { name: "twitter:description", content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8d31ef-c21b-4703-8711-8cc7b533d8ab/id-preview-0de9813e--600e7b81-8392-4546-afd3-aff7e1bf3cd3.lovable.app-1785729486368.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8d31ef-c21b-4703-8711-8cc7b533d8ab/id-preview-0de9813e--600e7b81-8392-4546-afd3-aff7e1bf3cd3.lovable.app-1785729486368.png" },
     ],
     links: [
       {

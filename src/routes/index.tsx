@@ -11,11 +11,11 @@ export const Route = createFileRoute("/")({
         content:
           "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
       },
-      { property: "og:title", content: "Step-Up SIP Calculator" },
+      { property: "og:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
       {
         property: "og:description",
         content:
-          "Model a quarterly step-up SIP: invested amount, estimated returns, total corpus and yearly breakdown.",
+          "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
       },
     ],
   }),
