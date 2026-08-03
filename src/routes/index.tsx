@@ -211,9 +211,39 @@ function Index() {
         </section>
       </div>
 
-      <section className="panel mt-6 p-6 sm:p-8">
-        <h2 className="text-lg font-semibold">Year-by-year growth</h2>
-        <div className="mt-6 overflow-x-auto">
+      <section className="panel mt-5 p-5 sm:mt-6 sm:p-8">
+        <h2 className="text-base font-semibold sm:text-lg">Year-by-year growth</h2>
+
+        {/* Mobile: stacked cards */}
+        <ul className="mt-5 space-y-3 sm:hidden">
+          {result.rows.map((row) => (
+            <li key={row.year} className="rounded-xl border border-border p-4">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+                  Year {row.year}
+                </span>
+                <span className="shrink-0 font-display text-lg font-semibold">
+                  {formatCurrency(row.value)}
+                </span>
+              </div>
+              <div className="mt-3 h-2 w-full rounded-full bg-muted">
+                <div
+                  className="h-2 rounded-full bg-brand"
+                  style={{ width: `${(row.value / maxValue) * 100}%` }}
+                />
+              </div>
+              <div className="mt-3 flex justify-between text-xs">
+                <span className="text-muted-foreground">
+                  Invested {formatCurrency(row.invested)}
+                </span>
+                <span className="text-gold">+{formatCurrency(row.returns)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Tablet and up: full table */}
+        <div className="mt-6 hidden overflow-x-auto sm:block">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr className="text-left text-xs font-semibold tracking-widest uppercase text-muted-foreground">
@@ -247,6 +277,7 @@ function Index() {
           </table>
         </div>
       </section>
+
 
       <footer className="mt-10 text-xs leading-relaxed text-muted-foreground">
         Returns are compounded monthly and the SIP amount steps up at the start of every
