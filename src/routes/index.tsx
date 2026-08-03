@@ -86,24 +86,25 @@ function Index() {
   const maxValue = result.rows.at(-1)?.value || 1;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8">
+    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8 sm:py-14">
       <header className="max-w-2xl">
-        <span className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold tracking-widest uppercase text-brand">
+        <span className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[0.65rem] font-semibold tracking-widest uppercase text-brand sm:text-xs">
           Wealth Planner
         </span>
-        <h1 className="mt-5 text-4xl leading-tight font-bold sm:text-5xl">
+        <h1 className="mt-4 text-[1.75rem] leading-tight font-bold sm:mt-5 sm:text-5xl">
           Step-Up SIP Calculator
         </h1>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+        <p className="mt-3 text-sm text-muted-foreground sm:mt-4 sm:text-lg">
           A small increase every quarter compounds into a very different outcome. Set your
           monthly SIP, the quarterly step-up and your expected return to see where you land.
         </p>
       </header>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-        <section className="panel p-6 sm:p-8">
-          <h2 className="text-lg font-semibold">Input details</h2>
-          <div className="mt-8 space-y-9">
+      <div className="mt-8 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+        <section className="panel p-5 sm:p-8">
+          <h2 className="text-base font-semibold sm:text-lg">Input details</h2>
+          <div className="mt-6 space-y-7 sm:mt-8 sm:space-y-9">
+
             <Field
               label="Monthly SIP amount"
               hint="Your starting monthly investment"
