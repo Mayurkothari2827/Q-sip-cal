@@ -36,26 +36,28 @@ type FieldProps = {
 function Field({ label, value, onChange, min, max, step, suffix, hint }: FieldProps) {
   return (
     <div className="space-y-3">
-      <div className="flex items-baseline justify-between gap-4">
-        <div>
-          <label className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:items-baseline sm:gap-4">
+        <div className="min-w-0">
+          <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground sm:text-sm">
             {label}
           </label>
           <p className="mt-0.5 text-xs text-muted-foreground/80">{hint}</p>
         </div>
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5">
+        <div className="flex shrink-0 items-center gap-1 rounded-lg border border-border bg-secondary px-2.5 py-1.5 sm:px-3">
           <input
             type="number"
+            inputMode="decimal"
             value={value}
             min={min}
             max={max}
             step={step}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-24 bg-transparent text-right font-display text-lg font-semibold text-brand outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-16 bg-transparent text-right font-display text-base font-semibold text-brand outline-none [appearance:textfield] sm:w-24 sm:text-lg [&::-webkit-inner-spin-button]:appearance-none"
           />
-          <span className="text-sm text-muted-foreground">{suffix}</span>
+          <span className="text-xs text-muted-foreground sm:text-sm">{suffix}</span>
         </div>
       </div>
+
       <input
         type="range"
         className="range-brand"
@@ -84,24 +86,25 @@ function Index() {
   const maxValue = result.rows.at(-1)?.value || 1;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8">
+    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8 sm:py-14">
       <header className="max-w-2xl">
-        <span className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold tracking-widest uppercase text-brand">
+        <span className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[0.65rem] font-semibold tracking-widest uppercase text-brand sm:text-xs">
           Wealth Planner
         </span>
-        <h1 className="mt-5 text-4xl leading-tight font-bold sm:text-5xl">
+        <h1 className="mt-4 text-[1.75rem] leading-tight font-bold sm:mt-5 sm:text-5xl">
           Step-Up SIP Calculator
         </h1>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+        <p className="mt-3 text-sm text-muted-foreground sm:mt-4 sm:text-lg">
           A small increase every quarter compounds into a very different outcome. Set your
           monthly SIP, the quarterly step-up and your expected return to see where you land.
         </p>
       </header>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-        <section className="panel p-6 sm:p-8">
-          <h2 className="text-lg font-semibold">Input details</h2>
-          <div className="mt-8 space-y-9">
+      <div className="mt-8 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+        <section className="panel p-5 sm:p-8">
+          <h2 className="text-base font-semibold sm:text-lg">Input details</h2>
+          <div className="mt-6 space-y-7 sm:mt-8 sm:space-y-9">
+
             <Field
               label="Monthly SIP amount"
               hint="Your starting monthly investment"
@@ -145,17 +148,17 @@ function Index() {
           </div>
         </section>
 
-        <section className="panel p-6 sm:p-8">
-          <h2 className="text-lg font-semibold">Output details</h2>
+        <section className="panel p-5 sm:p-8">
+          <h2 className="text-base font-semibold sm:text-lg">Output details</h2>
 
-          <div className="mt-8 rounded-2xl border border-border bg-ink/40 p-6">
-            <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+          <div className="mt-6 rounded-2xl border border-border bg-ink/40 p-5 sm:mt-8 sm:p-6">
+            <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
               Total amount
             </p>
-            <p className="mt-2 font-display text-4xl font-bold text-brand sm:text-5xl">
+            <p className="mt-2 font-display text-[1.9rem] leading-tight font-bold break-words text-brand sm:text-5xl">
               {formatCurrency(result.total)}
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">
+            <p className="mt-3 text-xs text-muted-foreground sm:text-sm">
               Your final SIP in month {Math.max(1, Math.round(years * 12))} is{" "}
               <span className="font-semibold text-foreground">
                 {formatCurrency(
@@ -170,24 +173,25 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-border p-5">
-              <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-                Invested amount
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4">
+            <div className="rounded-2xl border border-border p-4 sm:p-5">
+              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
+                Invested
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold">
+              <p className="mt-2 font-display text-lg font-semibold break-words sm:text-2xl">
                 {formatCurrency(result.invested)}
               </p>
             </div>
-            <div className="rounded-2xl border border-border p-5">
-              <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-                Estimated returns
+            <div className="rounded-2xl border border-border p-4 sm:p-5">
+              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
+                Returns
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold text-gold">
+              <p className="mt-2 font-display text-lg font-semibold break-words text-gold sm:text-2xl">
                 {formatCurrency(result.returns)}
               </p>
             </div>
           </div>
+
 
           <div className="mt-6">
             <div className="flex justify-between text-xs font-medium text-muted-foreground">
@@ -209,9 +213,39 @@ function Index() {
         </section>
       </div>
 
-      <section className="panel mt-6 p-6 sm:p-8">
-        <h2 className="text-lg font-semibold">Year-by-year growth</h2>
-        <div className="mt-6 overflow-x-auto">
+      <section className="panel mt-5 p-5 sm:mt-6 sm:p-8">
+        <h2 className="text-base font-semibold sm:text-lg">Year-by-year growth</h2>
+
+        {/* Mobile: stacked cards */}
+        <ul className="mt-5 space-y-3 sm:hidden">
+          {result.rows.map((row) => (
+            <li key={row.year} className="rounded-xl border border-border p-4">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+                  Year {row.year}
+                </span>
+                <span className="shrink-0 font-display text-lg font-semibold">
+                  {formatCurrency(row.value)}
+                </span>
+              </div>
+              <div className="mt-3 h-2 w-full rounded-full bg-muted">
+                <div
+                  className="h-2 rounded-full bg-brand"
+                  style={{ width: `${(row.value / maxValue) * 100}%` }}
+                />
+              </div>
+              <div className="mt-3 flex justify-between text-xs">
+                <span className="text-muted-foreground">
+                  Invested {formatCurrency(row.invested)}
+                </span>
+                <span className="text-gold">+{formatCurrency(row.returns)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Tablet and up: full table */}
+        <div className="mt-6 hidden overflow-x-auto sm:block">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr className="text-left text-xs font-semibold tracking-widest uppercase text-muted-foreground">
@@ -245,6 +279,7 @@ function Index() {
           </table>
         </div>
       </section>
+
 
       <footer className="mt-10 text-xs leading-relaxed text-muted-foreground">
         Returns are compounded monthly and the SIP amount steps up at the start of every
