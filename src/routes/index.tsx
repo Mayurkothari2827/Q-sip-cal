@@ -36,26 +36,28 @@ type FieldProps = {
 function Field({ label, value, onChange, min, max, step, suffix, hint }: FieldProps) {
   return (
     <div className="space-y-3">
-      <div className="flex items-baseline justify-between gap-4">
-        <div>
-          <label className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:items-baseline sm:gap-4">
+        <div className="min-w-0">
+          <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground sm:text-sm">
             {label}
           </label>
           <p className="mt-0.5 text-xs text-muted-foreground/80">{hint}</p>
         </div>
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5">
+        <div className="flex shrink-0 items-center gap-1 rounded-lg border border-border bg-secondary px-2.5 py-1.5 sm:px-3">
           <input
             type="number"
+            inputMode="decimal"
             value={value}
             min={min}
             max={max}
             step={step}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-24 bg-transparent text-right font-display text-lg font-semibold text-brand outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-16 bg-transparent text-right font-display text-base font-semibold text-brand outline-none [appearance:textfield] sm:w-24 sm:text-lg [&::-webkit-inner-spin-button]:appearance-none"
           />
-          <span className="text-sm text-muted-foreground">{suffix}</span>
+          <span className="text-xs text-muted-foreground sm:text-sm">{suffix}</span>
         </div>
       </div>
+
       <input
         type="range"
         className="range-brand"
