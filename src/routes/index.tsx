@@ -2,26 +2,80 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { calculateStepUpSip, formatCurrency } from "@/lib/sip";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(
+  {
   head: () => ({
-    meta: [
-      { title: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
-      {
-        name: "description",
-        content:
-          "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
-      },
-      { property: "og:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
-      {
-        property: "og:description",
-        content:
-          "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
-      },
-    ],
+      meta: [
+        { title: "Quaterly Step Up calculator" },
+        {
+          name: "description",
+          content:
+            "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
+        },
+        { property: "og:title", content: "Quaterly Step Up calculator" },
+        {
+          property: "og:description",
+          content:
+            "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
+        },
+      ],
   }),
   component: Index,
 });
 
+/* ─── Donut chart (SVG) ─── */
+function DonutChart({ invested, returns, size = 220 }: { invested: number; returns: number; size?: number }) {
+  const total = invested + returns;
+  const radius = (size / 220) * 90;
+  const sw = (size / 220) * 40;
+  if (total === 0) {
+    return (
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="oklch(0.28 0.035 255)" strokeWidth={sw} />
+      </svg>
+    );
+  }
+
+  const investedRatio = invested / total;
+  const circumference = 2 * Math.PI * radius;
+  const investedArc = circumference * investedRatio;
+  const returnsArc = circumference * (1 - investedRatio);
+  const cx = size / 2;
+  const cy = size / 2;
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {/* Invested segment (emerald) */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={radius}
+        fill="none"
+        stroke="oklch(0.75 0.18 160)"
+        strokeWidth={sw}
+        strokeDasharray={`${investedArc} ${circumference - investedArc}`}
+        strokeDashoffset={circumference * 0.25}
+        strokeLinecap="butt"
+        style={{ transition: "stroke-dasharray 0.4s ease" }}
+      />
+      {/* Returns segment (brown) */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={radius}
+        fill="none"
+        stroke="oklch(0.60 0.11 60)"
+        strokeWidth={sw}
+        strokeDasharray={`${returnsArc} ${circumference - returnsArc}`}
+        strokeDashoffset={circumference * 0.25 - investedArc}
+        strokeLinecap="butt"
+        style={{ transition: "stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease" }}
+      />
+    </svg>
+  );
+}
+
+/* ─── Groww-style field: label — input — slider ─── */
 type FieldProps = {
   label: string;
   value: number;
@@ -29,35 +83,39 @@ type FieldProps = {
   min: number;
   max: number;
   step: number;
-  suffix: string;
-  hint: string;
+  prefix?: string;
+  suffix?: string;
+  id: string;
 };
 
-function Field({ label, value, onChange, min, max, step, suffix, hint }: FieldProps) {
+function Field({ label, value, onChange, min, max, step, prefix, suffix, id }: FieldProps) {
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:items-baseline sm:gap-4">
-        <div className="min-w-0">
-          <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground sm:text-sm">
-            {label}
-          </label>
-          <p className="mt-0.5 text-xs text-muted-foreground/80">{hint}</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-1 rounded-lg border border-border bg-secondary px-2.5 py-1.5 sm:px-3">
+    <div className="mb-5 sm:mb-8 last:mb-0">
+      {/* Label row */}
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-sm text-muted-foreground font-medium">{label}</span>
+        <div className="groww-input">
+          {prefix && (
+            <span className="text-sm text-brand font-semibold">{prefix}</span>
+          )}
           <input
             type="number"
             inputMode="decimal"
+            id={id}
             value={value}
             min={min}
             max={max}
             step={step}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-16 bg-transparent text-right font-display text-base font-semibold text-brand outline-none [appearance:textfield] sm:w-24 sm:text-lg [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-20 bg-transparent text-right font-semibold text-base text-brand outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           />
-          <span className="text-xs text-muted-foreground sm:text-sm">{suffix}</span>
+          {suffix && (
+            <span className="text-sm text-brand font-medium">{suffix}</span>
+          )}
         </div>
       </div>
 
+      {/* Range slider */}
       <input
         type="range"
         className="range-brand"
@@ -66,58 +124,53 @@ function Field({ label, value, onChange, min, max, step, suffix, hint }: FieldPr
         max={max}
         step={step}
         onChange={(e) => onChange(Number(e.target.value))}
+        style={{
+          background: `linear-gradient(to right, oklch(0.75 0.18 160) 0%, oklch(0.75 0.18 160) ${((value - min) / (max - min)) * 100}%, oklch(0.28 0.035 255) ${((value - min) / (max - min)) * 100}%, oklch(0.28 0.035 255) 100%)`,
+        }}
       />
     </div>
   );
 }
 
 function Index() {
-  const [monthlySip, setMonthlySip] = useState(10000);
+  const [monthlySip, setMonthlySip] = useState(25000);
   const [quarterlyStepUp, setQuarterlyStepUp] = useState(3);
   const [annualReturn, setAnnualReturn] = useState(12);
-  const [years, setYears] = useState(15);
+  const [years, setYears] = useState(10);
 
   const result = useMemo(
     () => calculateStepUpSip({ monthlySip, quarterlyStepUp, annualReturn, years }),
     [monthlySip, quarterlyStepUp, annualReturn, years],
   );
 
-  const investedShare = result.total > 0 ? (result.invested / result.total) * 100 : 0;
   const maxValue = result.rows.at(-1)?.value || 1;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8 sm:py-14">
-      <header className="max-w-2xl">
-        <span className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[0.65rem] font-semibold tracking-widest uppercase text-brand sm:text-xs">
-          Wealth Planner
-        </span>
-        <h1 className="mt-4 text-[1.75rem] leading-tight font-bold sm:mt-5 sm:text-5xl">
-          Step-Up SIP Calculator
-        </h1>
-        <p className="mt-3 text-sm text-muted-foreground sm:mt-4 sm:text-lg">
-          A small increase every quarter compounds into a very different outcome. Set your
-          monthly SIP, the quarterly step-up and your expected return to see where you land.
-        </p>
-      </header>
+    <main className="mx-auto w-full max-w-5xl px-3 py-5 sm:px-6 sm:py-12">
+      {/* Page title */}
+      <h1 className="text-xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-8">
+        Quaterly Step Up calculator
+      </h1>
 
-      <div className="mt-8 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-        <section className="panel p-5 sm:p-8">
-          <h2 className="text-base font-semibold sm:text-lg">Input details</h2>
-          <div className="mt-6 space-y-7 sm:mt-8 sm:space-y-9">
+      {/* ─── Main calculator card ─── */}
+      <div className="panel p-4 sm:p-8">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
 
+          {/* LEFT: Sliders */}
+          <div>
             <Field
-              label="Monthly SIP amount"
-              hint="Your starting monthly investment"
+              label="Monthly investment"
+              id="MONTHLY_INVESTMENT"
               value={monthlySip}
               onChange={setMonthlySip}
               min={500}
               max={500000}
               step={500}
-              suffix="₹"
+              prefix="₹"
             />
             <Field
               label="Quarterly step-up"
-              hint="SIP increases by this much every 3 months"
+              id="QUARTERLY_STEP_UP"
               value={quarterlyStepUp}
               onChange={setQuarterlyStepUp}
               min={0}
@@ -126,39 +179,44 @@ function Index() {
               suffix="%"
             />
             <Field
-              label="Expected return rate"
-              hint="Per annum, compounded monthly"
+              label="Expected return rate (p.a)"
+              id="RETURN_RATE"
               value={annualReturn}
               onChange={setAnnualReturn}
               min={1}
               max={30}
               step={0.5}
-              suffix="p.a."
+              suffix="%"
             />
             <Field
               label="Time period"
-              hint="Investment horizon"
+              id="TIME_PERIOD"
               value={years}
               onChange={setYears}
               min={1}
               max={40}
               step={1}
-              suffix="yrs"
+              suffix="Yr"
             />
-          </div>
-        </section>
 
-        <section className="panel p-5 sm:p-8">
-          <h2 className="text-base font-semibold sm:text-lg">Output details</h2>
+            {/* ─── Results row ─── */}
+            <div className="mt-6 pt-6 border-t border-border space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Invested amount</span>
+                <span className="font-semibold text-foreground">{formatCurrency(result.invested)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Est. returns</span>
+                <span className="font-semibold text-foreground">{formatCurrency(result.returns)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Total value</span>
+                <span className="font-bold text-lg text-foreground">{formatCurrency(result.total)}</span>
+              </div>
+            </div>
 
-          <div className="mt-6 rounded-2xl border border-border bg-ink/40 p-5 sm:mt-8 sm:p-6">
-            <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
-              Total amount
-            </p>
-            <p className="mt-2 font-display text-[1.9rem] leading-tight font-bold break-words text-brand sm:text-5xl">
-              {formatCurrency(result.total)}
-            </p>
-            <p className="mt-3 text-xs text-muted-foreground sm:text-sm">
+            {/* Final SIP info */}
+            <p className="mt-4 text-xs text-muted-foreground">
               Your final SIP in month {Math.max(1, Math.round(years * 12))} is{" "}
               <span className="font-semibold text-foreground">
                 {formatCurrency(
@@ -173,58 +231,52 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4">
-            <div className="rounded-2xl border border-border p-4 sm:p-5">
-              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
-                Invested
-              </p>
-              <p className="mt-2 font-display text-lg font-semibold break-words sm:text-2xl">
-                {formatCurrency(result.invested)}
-              </p>
+          {/* RIGHT: Donut chart */}
+          <div className="flex flex-col items-center justify-center">
+            {/* Legend */}
+            <div className="flex items-center gap-4 sm:gap-6 mb-3 sm:mb-4 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: "oklch(0.75 0.18 160)" }} />
+                Invested amount
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: "oklch(0.60 0.11 60)" }} />
+                Est. returns
+              </span>
             </div>
-            <div className="rounded-2xl border border-border p-4 sm:p-5">
-              <p className="text-[0.65rem] font-semibold tracking-widest uppercase text-muted-foreground sm:text-xs">
-                Returns
-              </p>
-              <p className="mt-2 font-display text-lg font-semibold break-words text-gold sm:text-2xl">
-                {formatCurrency(result.returns)}
-              </p>
-            </div>
-          </div>
 
+            {/* Donut — smaller on mobile */}
+            <div className="sm:hidden">
+              <DonutChart invested={result.invested} returns={result.returns} size={180} />
+            </div>
+            <div className="hidden sm:block">
+              <DonutChart invested={result.invested} returns={result.returns} size={220} />
+            </div>
 
-          <div className="mt-6">
-            <div className="flex justify-between text-xs font-medium text-muted-foreground">
-              <span>Invested {investedShare.toFixed(0)}%</span>
-              <span>Returns {(100 - investedShare).toFixed(0)}%</span>
-            </div>
-            <div className="mt-2 flex h-3 overflow-hidden rounded-full bg-muted">
-              <div className="bg-brand" style={{ width: `${investedShare}%` }} />
-              <div className="flex-1 bg-gold" />
-            </div>
-            <p className="mt-4 text-sm text-muted-foreground">
+            {/* Growth multiple */}
+            <p className="mt-3 sm:mt-4 text-sm text-muted-foreground text-center">
               Growth multiple:{" "}
-              <span className="font-semibold text-foreground">
+              <span className="font-bold text-foreground">
                 {(result.invested > 0 ? result.total / result.invested : 0).toFixed(2)}x
-              </span>{" "}
-              on money invested.
+              </span>
             </p>
           </div>
-        </section>
+        </div>
       </div>
 
-      <section className="panel mt-5 p-5 sm:mt-6 sm:p-8">
-        <h2 className="text-base font-semibold sm:text-lg">Year-by-year growth</h2>
+      {/* ─── Year-by-year growth ─── */}
+      <div className="panel mt-4 sm:mt-6 p-4 sm:p-8">
+        <h2 className="text-base sm:text-lg font-semibold text-foreground">Year-by-year growth</h2>
 
         {/* Mobile: stacked cards */}
         <ul className="mt-5 space-y-3 sm:hidden">
           {result.rows.map((row) => (
-            <li key={row.year} className="rounded-xl border border-border p-4">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+            <li key={row.year} className="rounded-xl border border-border p-4 bg-card">
+              <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
                   Year {row.year}
                 </span>
-                <span className="shrink-0 font-display text-lg font-semibold">
+                <span className="font-semibold text-lg text-foreground">
                   {formatCurrency(row.value)}
                 </span>
               </div>
@@ -238,7 +290,7 @@ function Index() {
                 <span className="text-muted-foreground">
                   Invested {formatCurrency(row.invested)}
                 </span>
-                <span className="text-gold">+{formatCurrency(row.returns)}</span>
+                <span className="text-brand font-medium">+{formatCurrency(row.returns)}</span>
               </div>
             </li>
           ))}
@@ -258,12 +310,12 @@ function Index() {
             </thead>
             <tbody>
               {result.rows.map((row) => (
-                <tr key={row.year} className="border-t border-border/70">
+                <tr key={row.year} className="border-t border-border">
                   <td className="py-3 font-semibold">{row.year}</td>
                   <td className="py-3 text-muted-foreground">
                     {formatCurrency(row.invested)}
                   </td>
-                  <td className="py-3 text-gold">{formatCurrency(row.returns)}</td>
+                  <td className="py-3 text-brand font-medium">{formatCurrency(row.returns)}</td>
                   <td className="py-3 font-semibold">{formatCurrency(row.value)}</td>
                   <td className="py-3">
                     <div className="h-2 w-full rounded-full bg-muted">
@@ -278,12 +330,76 @@ function Index() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* ─── SEO: How it works ─── */}
+      <article className="panel mt-4 sm:mt-6 p-4 sm:p-8">
+        <h2 className="text-base sm:text-lg font-semibold text-foreground mb-3">How Quarterly Step-Up SIP Works</h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          A Quarterly Step-Up SIP (Systematic Investment Plan) lets you increase your monthly investment by a fixed percentage every quarter.
+          Unlike a regular SIP where your contribution stays the same, a step-up SIP grows with your income — helping you invest more as you earn more.
+          This compounding effect on contributions, combined with market returns, can significantly boost your long-term wealth.
+        </p>
+        <ul className="mt-4 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
+          <li className="flex gap-2 items-start">
+            <span className="mt-0.5 inline-block w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+            Start with a comfortable monthly SIP amount
+          </li>
+          <li className="flex gap-2 items-start">
+            <span className="mt-0.5 inline-block w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+            Your SIP automatically increases each quarter
+          </li>
+          <li className="flex gap-2 items-start">
+            <span className="mt-0.5 inline-block w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+            Beat inflation by growing investments with income
+          </li>
+          <li className="flex gap-2 items-start">
+            <span className="mt-0.5 inline-block w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+            See year-by-year growth with interactive charts
+          </li>
+        </ul>
+      </article>
+
+      {/* ─── SEO: FAQ ─── */}
+      <section className="panel mt-4 sm:mt-6 p-4 sm:p-8" aria-label="Frequently asked questions">
+        <h2 className="text-base sm:text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h2>
+        <dl className="space-y-4">
+          <div>
+            <dt className="text-sm font-medium text-foreground">What is a Step-Up SIP?</dt>
+            <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              A Step-Up SIP increases your monthly investment by a fixed percentage at regular intervals (quarterly in this calculator). It helps align your investments with salary hikes.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-foreground">How is the quarterly step-up applied?</dt>
+            <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              Every 3 months, your monthly SIP amount is multiplied by (1 + step-up %). For example, a ₹10,000 SIP with 5% quarterly step-up becomes ₹10,500 after the first quarter, ₹11,025 after the second, and so on.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-foreground">Is the return rate guaranteed?</dt>
+            <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              No. The expected return rate is an assumption for illustration purposes. Actual mutual fund returns vary based on market conditions. Past performance is not a guarantee of future results.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-foreground">What is the growth multiple?</dt>
+            <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              The growth multiple shows how many times your total value exceeds your total invested amount. A 2x multiple means your money has doubled.
+            </dd>
+          </div>
+        </dl>
       </section>
 
-
-      <footer className="mt-10 text-xs leading-relaxed text-muted-foreground">
-        Returns are compounded monthly and the SIP amount steps up at the start of every
-        quarter. Figures are indicative estimates, not investment advice.
+      {/* ─── Footer ─── */}
+      <footer className="mt-6 sm:mt-10 pb-6 text-center text-xs leading-relaxed text-muted-foreground">
+        <p className="flex items-center justify-center gap-1.5 font-medium text-sm text-foreground/80">
+          Made with <span className="text-red-500 animate-pulse">❤️</span> by <span className="font-semibold text-brand">Kothari brothers</span>
+        </p>
+        <p className="mt-3 text-muted-foreground/70">
+          Returns are compounded monthly and the SIP amount steps up at the start of every
+          quarter. Figures are indicative estimates, not investment advice.
+        </p>
       </footer>
     </main>
   );

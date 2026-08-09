@@ -76,20 +76,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter | Free Online Tool" },
       {
         name: "description",
-        content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown.",
+        content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts, invested vs returns breakdown, and growth multiples.",
       },
+      {
+        name: "keywords",
+        content: "step up SIP calculator, quarterly SIP, SIP step up, mutual fund calculator, SIP growth calculator, quarterly step up SIP, investment calculator India, SIP returns calculator",
+      },
+      { name: "author", content: "Kothari Brothers" },
+      { name: "theme-color", content: "#0a1628" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Step-Up SIP" },
+      { name: "application-name", content: "Quaterly Step Up calculator" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Quaterly Step Up calculator" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
-      { name: "twitter:title", content: "Step-Up SIP Calculator — Grow Your SIP Every Quarter" },
-      { property: "og:description", content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown." },
-      { name: "twitter:description", content: "Calculate the future value of a monthly SIP that steps up every quarter. See invested amount, estimated returns and a year-by-year growth breakdown." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8d31ef-c21b-4703-8711-8cc7b533d8ab/id-preview-0de9813e--600e7b81-8392-4546-afd3-aff7e1bf3cd3.lovable.app-1785729486368.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8d31ef-c21b-4703-8711-8cc7b533d8ab/id-preview-0de9813e--600e7b81-8392-4546-afd3-aff7e1bf3cd3.lovable.app-1785729486368.png" },
+      { property: "og:title", content: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter" },
+      { name: "twitter:title", content: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter" },
+      { property: "og:description", content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts and growth multiples." },
+      { name: "twitter:description", content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts and growth multiples." },
     ],
     links: [
       {
@@ -100,9 +109,66 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebApplication",
+              name: "Quaterly Step Up calculator",
+              description: "Free quarterly step-up SIP calculator with year-by-year growth charts, invested vs returns donut chart, and growth multiples.",
+              applicationCategory: "FinanceApplication",
+              operatingSystem: "Any",
+              offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+              creator: { "@type": "Organization", name: "Kothari Brothers" },
+            },
+            {
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is a Step-Up SIP?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "A Step-Up SIP increases your monthly investment by a fixed percentage at regular intervals (quarterly in this calculator). It helps align your investments with salary hikes.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How is the quarterly step-up applied?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Every 3 months, your monthly SIP amount is multiplied by (1 + step-up %). For example, a ₹10,000 SIP with 5% quarterly step-up becomes ₹10,500 after the first quarter, ₹11,025 after the second, and so on.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is the return rate guaranteed?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No. The expected return rate is an assumption for illustration purposes. Actual mutual fund returns vary based on market conditions.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What is the growth multiple?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The growth multiple shows how many times your total value exceeds your total invested amount. A 2x multiple means your money has doubled.",
+                  },
+                },
+              ],
+            },
+          ],
+        }),
+      },
     ],
   }),
 
@@ -116,6 +182,8 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="shortcut icon" type="image/png" href="/favicon.png" />
         <HeadContent />
       </head>
       <body>
