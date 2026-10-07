@@ -77,28 +77,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter | Free Online Tool" },
+      { title: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Online Tool" },
       {
         name: "description",
-        content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts, invested vs returns breakdown, and growth multiples.",
+        content: "Free quarterly step-up SIP calculator. Calculate how increasing your SIP by a fixed percentage every quarter compounds your wealth. Interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Plan smarter investments today.",
       },
       {
         name: "keywords",
-        content: "step up SIP calculator, quarterly SIP, SIP step up, mutual fund calculator, SIP growth calculator, quarterly step up SIP, investment calculator India, SIP returns calculator",
+        content: "step up SIP calculator, quarterly step up SIP calculator, quarterly SIP calculator, SIP step up calculator online, mutual fund SIP calculator, SIP growth calculator, quarterly step up SIP, investment calculator India, SIP returns calculator, systematic investment plan calculator, SIP increase calculator, step up SIP benefits, quarterly SIP step up meaning, SIP calculator with annual step up, best SIP calculator India",
       },
       { name: "author", content: "Kothari Brothers" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { name: "googlebot", content: "index, follow" },
+      { name: "rating", content: "general" },
       { name: "theme-color", content: "#0a1628" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "Step-Up SIP" },
-      { name: "application-name", content: "Quaterly Step Up calculator" },
+      { name: "apple-mobile-web-app-title", content: "Step-Up SIP Calculator" },
+      { name: "application-name", content: "Quarterly Step-Up SIP Calculator" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Quaterly Step Up calculator" },
+      { property: "og:locale", content: "en_IN" },
+      { property: "og:site_name", content: "Quarterly Step-Up SIP Calculator" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter" },
-      { name: "twitter:title", content: "Quaterly Step Up Calculator — Grow Your SIP Every Quarter" },
-      { property: "og:description", content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts and growth multiples." },
-      { name: "twitter:description", content: "Free quarterly step-up SIP calculator. See how increasing your SIP every quarter compounds your wealth with year-by-year growth charts and growth multiples." },
+      { property: "og:title", content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool" },
+      { name: "twitter:title", content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool" },
+      { property: "og:description", content: "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples." },
+      { name: "twitter:description", content: "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples." },
     ],
     links: [
       {
@@ -122,12 +126,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@graph": [
             {
               "@type": "WebApplication",
-              name: "Quaterly Step Up calculator",
-              description: "Free quarterly step-up SIP calculator with year-by-year growth charts, invested vs returns donut chart, and growth multiples.",
+              name: "Quarterly Step-Up SIP Calculator",
+              alternateName: ["Step Up SIP Calculator", "Quarterly SIP Calculator"],
+              description: "Free quarterly step-up SIP calculator with interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Calculate how increasing your SIP every quarter can compound your wealth faster.",
               applicationCategory: "FinanceApplication",
               operatingSystem: "Any",
+              inLanguage: "en-IN",
               offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
               creator: { "@type": "Organization", name: "Kothari Brothers" },
+              featureList: [
+                "Quarterly step-up SIP calculation",
+                "Year-by-year growth breakdown",
+                "Interactive donut chart (invested vs returns)",
+                "Growth multiple indicator",
+                "Final SIP amount projection",
+              ],
             },
             {
               "@type": "FAQPage",
@@ -137,7 +150,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                   name: "What is a Step-Up SIP?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "A Step-Up SIP increases your monthly investment by a fixed percentage at regular intervals (quarterly in this calculator). It helps align your investments with salary hikes.",
+                    text: "A Step-Up SIP (Systematic Investment Plan) increases your monthly investment by a fixed percentage at regular intervals. In a quarterly step-up SIP, the increase happens every 3 months. This helps align your investments with salary hikes and income growth, resulting in significantly higher wealth accumulation compared to a regular SIP.",
                   },
                 },
                 {
@@ -145,7 +158,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                   name: "How is the quarterly step-up applied?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Every 3 months, your monthly SIP amount is multiplied by (1 + step-up %). For example, a ₹10,000 SIP with 5% quarterly step-up becomes ₹10,500 after the first quarter, ₹11,025 after the second, and so on.",
+                    text: "Every 3 months, your monthly SIP amount is multiplied by (1 + step-up %). For example, a ₹10,000 SIP with 5% quarterly step-up becomes ₹10,500 after the first quarter, ₹11,025 after the second, and so on. This compounding on contributions significantly boosts long-term wealth.",
                   },
                 },
                 {
@@ -153,7 +166,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                   name: "Is the return rate guaranteed?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "No. The expected return rate is an assumption for illustration purposes. Actual mutual fund returns vary based on market conditions.",
+                    text: "No. The expected return rate is an assumption for illustration purposes. Actual mutual fund returns vary based on market conditions. Past performance is not indicative of future results. This calculator provides indicative estimates to help you plan your investments.",
                   },
                 },
                 {
@@ -161,8 +174,77 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                   name: "What is the growth multiple?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "The growth multiple shows how many times your total value exceeds your total invested amount. A 2x multiple means your money has doubled.",
+                    text: "The growth multiple shows how many times your total corpus value exceeds your total invested amount. A 2x multiple means your money has doubled. A higher growth multiple indicates stronger compounding returns over the investment period.",
                   },
+                },
+                {
+                  "@type": "Question",
+                  name: "What is the difference between step-up SIP and regular SIP?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "In a regular SIP, you invest a fixed amount every month throughout the investment period. In a step-up SIP, your monthly investment increases by a set percentage at regular intervals (quarterly or annually). Step-up SIPs help you invest more as your income grows, leading to a significantly larger corpus compared to regular SIPs over the same period.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How much more can I earn with a quarterly step-up SIP vs a regular SIP?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The difference depends on the step-up percentage and investment duration. For example, with a ₹10,000 monthly SIP, 12% annual returns, and 5% quarterly step-up over 20 years, your corpus could be 3-4x larger than a regular SIP with the same starting amount. Use our calculator to see the exact numbers for your scenario.",
+                  },
+                },
+              ],
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Quarterly Step-Up SIP Calculator",
+                },
+              ],
+            },
+            {
+              "@type": "HowTo",
+              name: "How to Use the Quarterly Step-Up SIP Calculator",
+              description: "Follow these simple steps to calculate how much your quarterly step-up SIP will grow over time.",
+              step: [
+                {
+                  "@type": "HowToStep",
+                  position: 1,
+                  name: "Enter Monthly Investment",
+                  text: "Enter your starting monthly SIP amount in rupees. This is the amount you plan to invest every month initially.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 2,
+                  name: "Set Quarterly Step-Up Percentage",
+                  text: "Choose the percentage by which your SIP will increase every quarter. A typical range is 2-10%.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 3,
+                  name: "Set Expected Annual Return Rate",
+                  text: "Enter the expected annual return rate from your mutual fund investments. Equity funds have historically returned 12-15% per annum.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 4,
+                  name: "Choose Investment Duration",
+                  text: "Select the number of years you plan to continue the SIP. Longer durations benefit more from compounding.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 5,
+                  name: "View Results",
+                  text: "Instantly see your total invested amount, estimated returns, total corpus value, growth multiple, and year-by-year breakdown.",
                 },
               ],
             },
