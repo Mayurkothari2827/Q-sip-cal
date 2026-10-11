@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,17 +78,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Online Tool" },
+      {
+        title: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Online Tool",
+      },
       {
         name: "description",
-        content: "Free quarterly step-up SIP calculator. Calculate how increasing your SIP by a fixed percentage every quarter compounds your wealth. Interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Plan smarter investments today.",
+        content:
+          "Free quarterly step-up SIP calculator. Calculate how increasing your SIP by a fixed percentage every quarter compounds your wealth. Interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Plan smarter investments today.",
       },
       {
         name: "keywords",
-        content: "step up SIP calculator, quarterly step up SIP calculator, quarterly SIP calculator, SIP step up calculator online, mutual fund SIP calculator, SIP growth calculator, quarterly step up SIP, investment calculator India, SIP returns calculator, systematic investment plan calculator, SIP increase calculator, step up SIP benefits, quarterly SIP step up meaning, SIP calculator with annual step up, best SIP calculator India",
+        content:
+          "step up SIP calculator, quarterly step up SIP calculator, quarterly SIP calculator, SIP step up calculator online, mutual fund SIP calculator, SIP growth calculator, quarterly step up SIP, investment calculator India, SIP returns calculator, systematic investment plan calculator, SIP increase calculator, step up SIP benefits, quarterly SIP step up meaning, SIP calculator with annual step up, best SIP calculator India",
       },
       { name: "author", content: "Kothari Brothers" },
-      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
       { name: "googlebot", content: "index, follow" },
       { name: "rating", content: "general" },
       { name: "theme-color", content: "#0a1628" },
@@ -99,10 +107,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:locale", content: "en_IN" },
       { property: "og:site_name", content: "Quarterly Step-Up SIP Calculator" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool" },
-      { name: "twitter:title", content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool" },
-      { property: "og:description", content: "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples." },
-      { name: "twitter:description", content: "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples." },
+      {
+        property: "og:title",
+        content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool",
+      },
+      {
+        name: "twitter:title",
+        content: "Quarterly Step-Up SIP Calculator — Grow Your SIP Every Quarter | Free Tool",
+      },
+      {
+        property: "og:description",
+        content:
+          "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Free quarterly step-up SIP calculator with interactive charts. See how increasing your SIP every quarter compounds your wealth with year-by-year growth breakdown and growth multiples.",
+      },
     ],
     links: [
       {
@@ -128,7 +150,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               "@type": "WebApplication",
               name: "Quarterly Step-Up SIP Calculator",
               alternateName: ["Step Up SIP Calculator", "Quarterly SIP Calculator"],
-              description: "Free quarterly step-up SIP calculator with interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Calculate how increasing your SIP every quarter can compound your wealth faster.",
+              description:
+                "Free quarterly step-up SIP calculator with interactive year-by-year growth charts, invested vs returns donut chart, and growth multiples. Calculate how increasing your SIP every quarter can compound your wealth faster.",
               applicationCategory: "FinanceApplication",
               operatingSystem: "Any",
               inLanguage: "en-IN",
@@ -214,7 +237,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             {
               "@type": "HowTo",
               name: "How to Use the Quarterly Step-Up SIP Calculator",
-              description: "Follow these simple steps to calculate how much your quarterly step-up SIP will grow over time.",
+              description:
+                "Follow these simple steps to calculate how much your quarterly step-up SIP will grow over time.",
               step: [
                 {
                   "@type": "HowToStep",
@@ -283,6 +307,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster position="top-right" richColors />
     </QueryClientProvider>
   );
 }
