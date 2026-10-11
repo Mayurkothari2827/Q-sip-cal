@@ -319,12 +319,13 @@ function AppleChartTooltip({ active, payload, label }: AppleChartTooltipProps) {
     const invested = payload.find((p) => p.dataKey === "invested")?.value || 0;
     const value = payload.find((p) => p.dataKey === "value")?.value || 0;
     const returns = value - invested;
+    const yearNum = typeof label === "number" ? label : Number(label) || 0;
 
     return (
       <div className="rounded-xl border border-white/15 bg-slate-900/90 backdrop-blur-xl p-3.5 shadow-2xl text-xs text-foreground min-w-[190px]">
         <div className="font-semibold text-sm text-foreground mb-2 flex items-center justify-between border-b border-white/10 pb-1.5">
           <span>Year {label}</span>
-          <span className="text-[11px] font-normal text-muted-foreground">Month {label * 12}</span>
+          <span className="text-[11px] font-normal text-muted-foreground">Month {yearNum * 12}</span>
         </div>
         <div className="space-y-1.5 tabular-nums">
           <div className="flex justify-between items-center text-muted-foreground">
